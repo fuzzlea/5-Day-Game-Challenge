@@ -25,11 +25,11 @@ signal Attack_Ranged
 
 @export_subgroup("Init Stats")
 @export var InitHealth: float = 100.0
-@export var InitMeleDamage : float = 10.0
-@export var InitRangedDamage : float = 5.0
+@export var InitMeleDamage: float = 10.0
+@export var InitRangedDamage: float = 5.0
 
 @export_subgroup("Components")
-@export var c_BodyComponent : BodyComponent
+@export var c_BodyComponent: BodyComponent
 
 # Inputs
 
@@ -75,13 +75,12 @@ func InitializePlayer():
 # Inputs
 
 func handle_inputs(delta: float):
-	
 	if mele_cooldown > 0:
 		mele_cooldown -= delta
-		mele_cooldown = clampf(mele_cooldown,0,mele_cooldown_threshold)
+		mele_cooldown = clampf(mele_cooldown, 0, mele_cooldown_threshold)
 	if ranged_cooldown > 0:
 		ranged_cooldown -= delta
-		ranged_cooldown = clampf(ranged_cooldown,0,ranged_cooldown_threshold)
+		ranged_cooldown = clampf(ranged_cooldown, 0, ranged_cooldown_threshold)
 	
 	if Input.is_action_just_pressed("Player-Mele"):
 		if mele_cooldown != 0: return
@@ -95,8 +94,7 @@ func handle_inputs(delta: float):
 
 # Movement
 
-func handle_movement(delta : float):
-	
+func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
@@ -117,7 +115,6 @@ func handle_movement(delta : float):
 
 	if jump_buffer_timer > 0:
 		if is_on_floor() or coyote_timer > 0:
-			
 			velocity.y = jump_force
 			jump_buffer_timer = 0
 			coyote_timer = 0
@@ -125,7 +122,6 @@ func handle_movement(delta : float):
 			Jump.emit()
 			
 		elif current_air_jumps > 0:
-			
 			velocity.y = jump_force * air_jump_boost
 			current_air_jumps -= 1
 			jump_buffer_timer = 0
@@ -152,8 +148,7 @@ func handle_movement(delta : float):
 
 # Phys_Proc
 
-func _physics_process(delta : float) -> void:
-	
+func _physics_process(delta: float) -> void:
 	handle_movement(delta)
 	handle_inputs(delta)
 	
@@ -192,7 +187,6 @@ func signal_Hurt():
 # Ready
 
 func _ready() -> void:
-	
 	# Connect Signals and Functions
 	Jump.connect(signal_Jump)
 	WallJump.connect(signal_WallJump)
