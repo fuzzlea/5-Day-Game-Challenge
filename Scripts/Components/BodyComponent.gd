@@ -22,6 +22,9 @@ func hit(with : DamageComponent):
 	
 	Health -= with.Damage
 	with.hit(self)
+	
+	if User is Player:
+		User.emit_signal("Hurt")
 
 func f_area_entered(a : Area2D):
 	if a is DamageComponent: hit(a)
