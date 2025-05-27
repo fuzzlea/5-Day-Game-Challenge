@@ -1,0 +1,75 @@
+[gd_scene load_steps=6 format=3 uid="uid://bqtnsa4wygpbc"]
+
+[ext_resource type="PackedScene" uid="uid://b7f82nkhwhmd" path="res://Scenes/Player/Player.tscn" id="1_oy6ep"]
+[ext_resource type="Texture2D" uid="uid://bts5m8t70a5ms" path="res://icon.svg" id="2_kr3tn"]
+[ext_resource type="PackedScene" uid="uid://dn1jos73cwcum" path="res://Scenes/Components/DamageComponent.tscn" id="3_v7cj3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v7cj3"]
+size = Vector2(127.723, 120)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_83r8m"]
+radius = 109.0
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_oy6ep")]
+position = Vector2(608, 243)
+
+[node name="SillyTestMap" type="Node" parent="."]
+
+[node name="Sprite2D" type="StaticBody2D" parent="SillyTestMap"]
+position = Vector2(603.5, 594)
+scale = Vector2(21.6328, 1)
+
+[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D"]
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D"]
+shape = SubResource("RectangleShape2D_v7cj3")
+
+[node name="Sprite2D2" type="StaticBody2D" parent="SillyTestMap"]
+position = Vector2(1985, -69)
+scale = Vector2(1.413, 10.52)
+
+[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D2"]
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D2"]
+shape = SubResource("RectangleShape2D_v7cj3")
+
+[node name="Sprite2D3" type="StaticBody2D" parent="SillyTestMap"]
+position = Vector2(-545, 226)
+scale = Vector2(12.588, 1.315)
+
+[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D3"]
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D3"]
+shape = SubResource("RectangleShape2D_v7cj3")
+
+[node name="Sprite2D4" type="StaticBody2D" parent="SillyTestMap"]
+position = Vector2(976, -108)
+scale = Vector2(12.588, 1.315)
+
+[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D4"]
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D4"]
+shape = SubResource("RectangleShape2D_v7cj3")
+
+[node name="DamageComponent" parent="SillyTestMap" instance=ExtResource("3_v7cj3")]
+Damage = 20.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/DamageComponent"]
+position = Vector2(-318, 28)
+shape = SubResource("CircleShape2D_83r8m")
+debug_color = Color(0.978666, 0, 0.394343, 0.42)
+
+[node name="DamageComponent2" parent="SillyTestMap" instance=ExtResource("3_v7cj3")]
+position = Vector2(1917, -361)
+Damage = 5.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/DamageComponent2"]
+position = Vector2(-318, 28)
+shape = SubResource("CircleShape2D_83r8m")
+debug_color = Color(0.978666, 0, 0.394343, 0.42)

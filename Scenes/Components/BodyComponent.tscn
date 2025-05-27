@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bf3i6rha1s7dd"]
+
+[ext_resource type="Script" uid="uid://b6voq024jfkgi" path="res://Scripts/Components/BodyComponent.gd" id="1_xwn3f"]
+
+[node name="BodyComponent" type="Area2D"]
+script = ExtResource("1_xwn3f")

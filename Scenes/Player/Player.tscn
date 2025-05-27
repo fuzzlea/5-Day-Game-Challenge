@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://b7f82nkhwhmd"]
+
+[ext_resource type="Script" uid="uid://ck0bwvrxp2hax" path="res://Scripts/Player/Player.gd" id="1_gntrk"]
+[ext_resource type="Texture2D" uid="uid://bts5m8t70a5ms" path="res://icon.svg" id="1_rpqav"]
+[ext_resource type="PackedScene" uid="uid://bf3i6rha1s7dd" path="res://Scenes/Components/BodyComponent.tscn" id="3_h54ih"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qbkls"]
+radius = 36.0
+height = 140.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ude3g"]
+size = Vector2(122, 120)
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("c_BodyComponent")]
+script = ExtResource("1_gntrk")
+c_BodyComponent = NodePath("BodyComponent")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_rpqav")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_qbkls")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.5, 0.5)
+position_smoothing_enabled = true
+
+[node name="BodyComponent" parent="." instance=ExtResource("3_h54ih")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyComponent"]
+shape = SubResource("RectangleShape2D_ude3g")
+debug_color = Color(0.704814, 0.401093, 0.728658, 0.42)
