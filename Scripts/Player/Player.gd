@@ -14,21 +14,38 @@ signal WallJumpReady
 signal MoveLeft
 signal MoveRight
 
+signal Hurt
+
+signal Attack_Mele
+signal Attack_Ranged
+
 ## Vars
 
 # Exports
 
 @export_subgroup("Init Stats")
 @export var InitHealth: float = 100.0
+@export var InitMeleDamage: float = 10.0
+@export var InitRangedDamage: float = 5.0
 
 @export_subgroup("Components")
-@export var c_BodyComponent : BodyComponent
+@export var c_BodyComponent: BodyComponent
+
+# Inputs
+
+var mele_cooldown = 0
+var mele_cooldown_threshold = 0.35
+
+var ranged_cooldown = 0
+var ranged_cooldown_threshold = 0.15
+
 
 # Movement
 
 var speed = 1250.0
 var jump_force = -1250.0
 var accel = 0.25
+var dir = 1
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -55,10 +72,29 @@ func InitializePlayer():
 
 #
 
+# Inputs
+
+func handle_inputs(delta: float):
+	if mele_cooldown > 0:
+		mele_cooldown -= delta
+		mele_cooldown = clampf(mele_cooldown, 0, mele_cooldown_threshold)
+	if ranged_cooldown > 0:
+		ranged_cooldown -= delta
+		ranged_cooldown = clampf(ranged_cooldown, 0, ranged_cooldown_threshold)
+	
+	if Input.is_action_just_pressed("Player-Mele"):
+		if mele_cooldown != 0: return
+		print("Mele")
+		mele_cooldown = mele_cooldown_threshold
+	
+	if Input.is_action_just_pressed("Player-Range"):
+		if ranged_cooldown != 0: return
+		print("Ranged")
+		ranged_cooldown = ranged_cooldown_threshold
+
 # Movement
 
-func handle_movement(delta : float):
-	
+func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
@@ -79,7 +115,6 @@ func handle_movement(delta : float):
 
 	if jump_buffer_timer > 0:
 		if is_on_floor() or coyote_timer > 0:
-			
 			velocity.y = jump_force
 			jump_buffer_timer = 0
 			coyote_timer = 0
@@ -87,7 +122,6 @@ func handle_movement(delta : float):
 			Jump.emit()
 			
 		elif current_air_jumps > 0:
-			
 			velocity.y = jump_force * air_jump_boost
 			current_air_jumps -= 1
 			jump_buffer_timer = 0
@@ -101,12 +135,12 @@ func handle_movement(delta : float):
 			
 			WallJump.emit()
 		
-	var direction = Input.get_axis("Player-MoveLeft", "Player-MoveRight")
+	dir = Input.get_axis("Player-MoveLeft", "Player-MoveRight")
 		
-	if direction:
-		velocity.x = lerp(velocity.x, direction * speed, accel)
+	if dir:
+		velocity.x = lerp(velocity.x, dir * speed, accel)
 	else:
-		velocity.x = lerp(velocity.x, direction * speed, accel)
+		velocity.x = lerp(velocity.x, dir * speed, accel)
 
 #
 
@@ -114,8 +148,10 @@ func handle_movement(delta : float):
 
 # Phys_Proc
 
-func _physics_process(delta : float) -> void:
+func _physics_process(delta: float) -> void:
 	handle_movement(delta)
+	handle_inputs(delta)
+	
 	move_and_slide()
 
 #
@@ -143,12 +179,14 @@ func signal_MoveLeft():
 func signal_MoveRight():
 	pass
 
+func signal_Hurt():
+	print("Hurt me owie owie")
+
 #
 
 # Ready
 
 func _ready() -> void:
-	
 	# Connect Signals and Functions
 	Jump.connect(signal_Jump)
 	WallJump.connect(signal_WallJump)
@@ -157,6 +195,7 @@ func _ready() -> void:
 	WallJumpReady.connect(signal_WallJumpReady)
 	MoveLeft.connect(signal_MoveLeft)
 	MoveRight.connect(signal_MoveRight)
+	Hurt.connect(signal_Hurt)
 	
 	# Initialize the Player
 	InitializePlayer()
