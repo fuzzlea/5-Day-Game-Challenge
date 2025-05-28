@@ -28,9 +28,11 @@ signal Attack_Ranged
 # Exports
 
 @export_subgroup("Init Stats")
-@export var InitHealth: float = 100.0
-@export var InitMeleDamage: float = 10.0
-@export var InitRangedDamage: float = 5.0
+@export var Health: float = 100.0
+@export var MeleDamage: float = 10.0
+@export var MeleDamageRadius : float = 100.0
+@export var RangedDamage: float = 5.0
+@export var RangedBullet : String = "Regular"
 
 @export_subgroup("Components")
 @export var c_BodyComponent: BodyComponent
@@ -43,11 +45,14 @@ var mele_cooldown_threshold = 0.35
 var ranged_cooldown = 0
 var ranged_cooldown_threshold = 0.15
 
+# Animation
+
+var current_animation = "idle"
 
 # Movement
 
-var speed = 1250.0
-var jump_force = -1250.0
+var speed = 600.0
+var jump_force = -1000.0
 var accel = 0.25
 var dir = 1
 var prevDir = 1
@@ -132,7 +137,7 @@ func ranged_attack():
 	
 	get_tree().current_scene.add_child(newBullet)
 	
-	newBullet.create(self, self.position, prevDir)
+	newBullet.create(self, self.position + Vector2(prevDir * 50.0, 0), prevDir)
 
 # Movement
 
@@ -180,12 +185,28 @@ func handle_movement(delta: float):
 	dir = Input.get_axis("Player-MoveLeft", "Player-MoveRight")
 		
 	if dir:
+		
 		prevDir = dir
 		velocity.x = lerp(velocity.x, dir * speed, accel)
+		
+		if dir == -1: $AnimatedSprite2D.flip_h = true
+		else: $AnimatedSprite2D.flip_h = false
 	else:
 		velocity.x = lerp(velocity.x, dir * speed, accel)
 
 #
+
+# Animations
+
+func handle_animations():
+	
+	if dir == 0 and is_on_floor():
+		current_animation = "idle"
+	elif dir != 0 and is_on_floor():
+		current_animation = "run"
+	
+	$AnimatedSprite2D.animation = current_animation
+	$AnimatedSprite2D.play()
 
 ## Connectors
 
@@ -194,6 +215,7 @@ func handle_movement(delta: float):
 func _physics_process(delta: float) -> void:
 	handle_movement(delta)
 	handle_inputs(delta)
+	handle_animations()
 	
 	move_and_slide()
 
