@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=3 uid="uid://bqtnsa4wygpbc"]
+[gd_scene load_steps=7 format=3 uid="uid://bqtnsa4wygpbc"]
 
 [ext_resource type="PackedScene" uid="uid://b7f82nkhwhmd" path="res://Scenes/Player/Player.tscn" id="1_oy6ep"]
 [ext_resource type="Texture2D" uid="uid://bts5m8t70a5ms" path="res://icon.svg" id="2_kr3tn"]
 [ext_resource type="PackedScene" uid="uid://dn1jos73cwcum" path="res://Scenes/Components/DamageComponent.tscn" id="3_v7cj3"]
+[ext_resource type="PackedScene" uid="uid://dt02lih072pg2" path="res://Scenes/Enemies/Dummy.tscn" id="4_83r8m"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7cj3"]
 size = Vector2(127.723, 120)
@@ -73,3 +74,9 @@ Damage = 5.0
 position = Vector2(-318, 28)
 shape = SubResource("CircleShape2D_83r8m")
 debug_color = Color(0.978666, 0, 0.394343, 0.42)
+
+[node name="Dummy" parent="SillyTestMap" instance=ExtResource("4_83r8m")]
+position = Vector2(512, -277)
+
+[node name="Dummy2" parent="SillyTestMap" instance=ExtResource("4_83r8m")]
+position = Vector2(-67, 76)

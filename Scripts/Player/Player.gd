@@ -21,6 +21,10 @@ signal Attack_Ranged
 
 ## Vars
 
+# Onready
+
+@onready var DamageComponentScene : PackedScene = preload("res://Scenes/Components/DamageComponent.tscn")
+
 # Exports
 
 @export_subgroup("Init Stats")
@@ -46,6 +50,7 @@ var speed = 1250.0
 var jump_force = -1250.0
 var accel = 0.25
 var dir = 1
+var prevDir = 1
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -68,7 +73,7 @@ var jump_buffer_timer_threshold = 0.1
 # Initialization
 
 func InitializePlayer():
-	c_BodyComponent.init(self, InitHealth)
+	c_BodyComponent.init(self, Health)
 
 #
 
@@ -84,13 +89,50 @@ func handle_inputs(delta: float):
 	
 	if Input.is_action_just_pressed("Player-Mele"):
 		if mele_cooldown != 0: return
-		print("Mele")
+		mele_attack()
 		mele_cooldown = mele_cooldown_threshold
 	
 	if Input.is_action_just_pressed("Player-Range"):
 		if ranged_cooldown != 0: return
-		print("Ranged")
+		ranged_attack()
 		ranged_cooldown = ranged_cooldown_threshold
+
+# Attacks
+
+func mele_attack():
+	
+	if not DamageComponentScene.can_instantiate(): return
+	
+	var newDamage : DamageComponent = DamageComponentScene.instantiate()
+	var newCollisionShape : CollisionShape2D = CollisionShape2D.new()
+	var newCircleShape : CircleShape2D = CircleShape2D.new()
+	
+	newDamage.add_child(newCollisionShape)
+	
+	newCircleShape.radius = MeleDamageRadius
+	newCollisionShape.shape = newCircleShape
+	newCollisionShape.debug_color = Color.RED
+	
+	get_tree().current_scene.add_child(newDamage)
+	
+	newDamage.position = self.position + Vector2(prevDir * 100,0)
+	
+	newDamage.init(self, MeleDamage)
+	
+	await get_tree().create_timer(0.1).timeout
+	
+	if newDamage: newDamage.free()
+
+func ranged_attack():
+	
+	if RangedBullet == null or RangedBullet == "": return
+	
+	var newBulletScene : PackedScene = load("res://Scenes/Player/Bullets/" + RangedBullet + ".tscn")
+	var newBullet : Bullet = newBulletScene.instantiate()
+	
+	get_tree().current_scene.add_child(newBullet)
+	
+	newBullet.create(self, self.position, prevDir)
 
 # Movement
 
@@ -138,6 +180,7 @@ func handle_movement(delta: float):
 	dir = Input.get_axis("Player-MoveLeft", "Player-MoveRight")
 		
 	if dir:
+		prevDir = dir
 		velocity.x = lerp(velocity.x, dir * speed, accel)
 	else:
 		velocity.x = lerp(velocity.x, dir * speed, accel)
@@ -182,6 +225,12 @@ func signal_MoveRight():
 func signal_Hurt():
 	print("Hurt me owie owie")
 
+func signal_AttackMele():
+	pass
+
+func signal_AttackRanged():
+	pass
+
 #
 
 # Ready
@@ -196,6 +245,8 @@ func _ready() -> void:
 	MoveLeft.connect(signal_MoveLeft)
 	MoveRight.connect(signal_MoveRight)
 	Hurt.connect(signal_Hurt)
+	Attack_Mele.connect(signal_AttackMele)
+	Attack_Ranged.connect(signal_AttackRanged)
 	
 	# Initialize the Player
 	InitializePlayer()
