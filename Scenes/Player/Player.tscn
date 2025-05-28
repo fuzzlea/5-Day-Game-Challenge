@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://b7f82nkhwhmd"]
+[gd_scene load_steps=15 format=3 uid="uid://b7f82nkhwhmd"]
 
 [ext_resource type="Script" uid="uid://ck0bwvrxp2hax" path="res://Scripts/Player/Player.gd" id="1_gntrk"]
 [ext_resource type="Texture2D" uid="uid://bts5m8t70a5ms" path="res://icon.svg" id="1_rpqav"]
@@ -8,6 +8,22 @@
 [sub_resource type="AtlasTexture" id="AtlasTexture_t26db"]
 atlas = ExtResource("2_ude3g")
 region = Rect2(0, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ude3g"]
+atlas = ExtResource("2_ude3g")
+region = Rect2(0, 150, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fk5o5"]
+atlas = ExtResource("2_ude3g")
+region = Rect2(450, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_825xp"]
+atlas = ExtResource("2_ude3g")
+region = Rect2(600, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ji083"]
+atlas = ExtResource("2_ude3g")
+region = Rect2(750, 0, 150, 150)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jmcll"]
 atlas = ExtResource("2_ude3g")
@@ -22,10 +38,27 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t26db")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ude3g")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fk5o5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_825xp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ji083")
+}],
+"loop": false,
+"name": &"jump",
+"speed": 7.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -52,7 +85,7 @@ c_BodyComponent = NodePath("BodyComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4wape")
-animation = &"run"
+animation = &"jump"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
@@ -64,7 +97,7 @@ rotation = -1.57079
 shape = SubResource("CapsuleShape2D_qbkls")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.5, 0.5)
+zoom = Vector2(0.75, 0.75)
 position_smoothing_enabled = true
 
 [node name="BodyComponent" parent="." instance=ExtResource("3_h54ih")]

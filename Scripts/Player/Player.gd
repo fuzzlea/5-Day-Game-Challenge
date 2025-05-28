@@ -7,6 +7,7 @@ extends CharacterBody2D
 signal Jump
 signal WallJump
 signal AirJump
+signal Landed
 
 signal JumpReady
 signal WallJumpReady
@@ -56,6 +57,12 @@ var jump_force = -1000.0
 var accel = 0.25
 var dir = 1
 var prevDir = 1
+
+var jumping = false :
+	set(v):
+		jumping = v
+		if v: current_animation = "jump"
+		else: current_animation = "idle"
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -145,6 +152,7 @@ func handle_movement(delta: float):
 	if not is_on_floor():
 		velocity.y += gravity * delta
 	else:
+		if jumping: Landed.emit()
 		current_air_jumps = air_jumps
 		coyote_timer = coyote_timer_threshold
 	
@@ -200,9 +208,12 @@ func handle_movement(delta: float):
 
 func handle_animations():
 	
+	if current_animation == "jump": $AnimatedSprite2D.animation = current_animation; $AnimatedSprite2D.play(); return
+	
 	if dir == 0 and is_on_floor():
 		current_animation = "idle"
-	elif dir != 0 and is_on_floor():
+	
+	if dir != 0 and is_on_floor():
 		current_animation = "run"
 	
 	$AnimatedSprite2D.animation = current_animation
@@ -224,7 +235,7 @@ func _physics_process(delta: float) -> void:
 # Signals
 
 func signal_Jump():
-	pass
+	jumping = true
 
 func signal_WallJump():
 	pass
@@ -234,6 +245,9 @@ func signal_AirJump():
 
 func signal_JumpReady():
 	pass
+
+func signal_Landed():
+	jumping = false
 
 func signal_WallJumpReady():
 	pass
@@ -263,6 +277,7 @@ func _ready() -> void:
 	WallJump.connect(signal_WallJump)
 	AirJump.connect(signal_AirJump)
 	JumpReady.connect(signal_JumpReady)
+	Landed.connect(signal_Landed)
 	WallJumpReady.connect(signal_WallJumpReady)
 	MoveLeft.connect(signal_MoveLeft)
 	MoveRight.connect(signal_MoveRight)
