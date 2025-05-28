@@ -1,32 +1,75 @@
-[gd_scene load_steps=6 format=3 uid="uid://b7f82nkhwhmd"]
+[gd_scene load_steps=11 format=3 uid="uid://b7f82nkhwhmd"]
 
 [ext_resource type="Script" uid="uid://ck0bwvrxp2hax" path="res://Scripts/Player/Player.gd" id="1_gntrk"]
 [ext_resource type="Texture2D" uid="uid://bts5m8t70a5ms" path="res://icon.svg" id="1_rpqav"]
+[ext_resource type="Texture2D" uid="uid://kekgjs1q28ua" path="res://Assets/kitty sprite.png" id="2_ude3g"]
 [ext_resource type="PackedScene" uid="uid://bf3i6rha1s7dd" path="res://Scenes/Components/BodyComponent.tscn" id="3_h54ih"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_t26db"]
+atlas = ExtResource("2_ude3g")
+region = Rect2(0, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmcll"]
+atlas = ExtResource("2_ude3g")
+region = Rect2(150, 0, 150, 150)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wape"]
+atlas = ExtResource("2_ude3g")
+region = Rect2(300, 0, 150, 150)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_4wape"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t26db")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmcll")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4wape")
+}],
+"loop": true,
+"name": &"run",
+"speed": 6.0
+}]
+
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qbkls"]
-radius = 36.0
-height = 140.0
+radius = 15.3
+height = 108.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ude3g"]
-size = Vector2(122, 120)
+size = Vector2(93, 84)
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("c_BodyComponent")]
 script = ExtResource("1_gntrk")
 c_BodyComponent = NodePath("BodyComponent")
 
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_4wape")
+animation = &"run"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 texture = ExtResource("1_rpqav")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 53.89)
+rotation = -1.57079
 shape = SubResource("CapsuleShape2D_qbkls")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-zoom = Vector2(0.1, 0.1)
+zoom = Vector2(0.5, 0.5)
 position_smoothing_enabled = true
 
 [node name="BodyComponent" parent="." instance=ExtResource("3_h54ih")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="BodyComponent"]
+position = Vector2(4.5, 29)
 shape = SubResource("RectangleShape2D_ude3g")
 debug_color = Color(0.704814, 0.401093, 0.728658, 0.42)
