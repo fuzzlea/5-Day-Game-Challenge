@@ -9,6 +9,8 @@ var CollisionShape : CollisionShape2D
 
 func init(user: CharacterBody2D, health: float = 100.0):
 	
+	if health == -1: health = INF
+	
 	print("Body Initialized For: " + user.name + "\nHealth: " + str(health))
 	
 	User = user
@@ -20,14 +22,13 @@ func init(user: CharacterBody2D, health: float = 100.0):
 
 func hit(with : DamageComponent):
 	
+	if (User is Player) and (with.Owner is Player): return
+	
 	Health -= with.Damage
 	with.hit(self)
-	
-	if User is Player:
-		User.emit_signal("Hurt")
 
 func f_area_entered(a : Area2D):
 	if a is DamageComponent: hit(a)
 
-func f_area_exited(a : Area2D):
+func f_area_exited(_a : Area2D):
 	pass

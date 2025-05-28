@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://b80vqncg3hwou"]
+
+[ext_resource type="Script" uid="uid://14bxicw7aj38" path="res://Scripts/Player/Bullets/Regular.gd" id="1_msbh5"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_msbh5"]
+size = Vector2(44, 46)
+
+[node name="Regular" type="StaticBody2D"]
+collision_layer = 2
+collision_mask = 2
+constant_linear_velocity = Vector2(25, 0)
+script = ExtResource("1_msbh5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_msbh5")
+debug_color = Color(0.782999, 0.364722, 0.618411, 0.42)
