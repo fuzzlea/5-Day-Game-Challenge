@@ -57,7 +57,7 @@ var current_animation = "idle"
 
 var speed = 600.0
 var jump_force = -1000.0
-var roll_force = 2500.0
+var roll_force = 5000.0
 var accel = 0.25
 var dir = 1
 var prevDir = 1
@@ -75,7 +75,7 @@ var rolling = false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 var rolling_timer = 0
-var rolling_timer_threshold = 0.35
+var rolling_timer_threshold = 0.25
 
 var air_jumps = 1
 var air_jump_boost = 1.15
@@ -309,8 +309,19 @@ func handle_state():
 	
 
 func handle_animations():
-	#if State == "": return
-	return
+	
+	var current_anims = [ # temp
+		
+		"jump",
+		"idle",
+		"run",
+		"roll"
+		
+	] #temp
+	
+	if State == "": return
+	if not current_anims.has(State): return
+	
 	$AnimatedSprite2D.animation = State
 	$AnimatedSprite2D.play()
 
