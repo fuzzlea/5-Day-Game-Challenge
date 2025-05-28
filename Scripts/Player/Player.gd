@@ -24,16 +24,19 @@ signal Attack_Ranged
 
 # Onready
 
-@onready var DamageComponentScene : PackedScene = preload("res://Scenes/Components/DamageComponent.tscn")
+@onready var DamageComponentScene: PackedScene = preload("res://Scenes/Components/DamageComponent.tscn")
 
 # Exports
+
+@export_subgroup("Stats")
+@export var State: String
 
 @export_subgroup("Init Stats")
 @export var Health: float = 100.0
 @export var MeleDamage: float = 10.0
-@export var MeleDamageRadius : float = 100.0
+@export var MeleDamageRadius: float = 100.0
 @export var RangedDamage: float = 5.0
-@export var RangedBullet : String = "Regular"
+@export var RangedBullet: String = "Regular"
 
 @export_subgroup("Components")
 @export var c_BodyComponent: BodyComponent
@@ -54,21 +57,29 @@ var current_animation = "idle"
 
 var speed = 600.0
 var jump_force = -1000.0
+var roll_force = 2500.0
 var accel = 0.25
 var dir = 1
 var prevDir = 1
 
-var jumping = false :
-	set(v):
-		jumping = v
-		if v: current_animation = "jump"
-		else: current_animation = "idle"
+var jumping = false
+var in_air = false
+var climbing = false
+var running = false
+var idle = true
+var attacking = false
+var attacking_mele = false
+var attacking_ranged = false
+var rolling = false
 
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
+var rolling_timer = 0
+var rolling_timer_threshold = 0.35
+
 var air_jumps = 1
-var current_air_jumps = 0
 var air_jump_boost = 1.15
+var current_air_jumps = 0
 
 var wall_jumps = 0
 
@@ -92,32 +103,44 @@ func InitializePlayer():
 # Inputs
 
 func handle_inputs(delta: float):
-	if mele_cooldown > 0:
-		mele_cooldown -= delta
-		mele_cooldown = clampf(mele_cooldown, 0, mele_cooldown_threshold)
+	
+	mele_cooldown -= delta
+	mele_cooldown = clampf(mele_cooldown, 0, mele_cooldown_threshold)
+	
+	rolling_timer -= delta
+	rolling_timer = clampf(rolling_timer, 0, rolling_timer_threshold)
+	
 	if ranged_cooldown > 0:
 		ranged_cooldown -= delta
 		ranged_cooldown = clampf(ranged_cooldown, 0, ranged_cooldown_threshold)
 	
 	if Input.is_action_just_pressed("Player-Mele"):
 		if mele_cooldown != 0: return
+		
 		mele_attack()
 		mele_cooldown = mele_cooldown_threshold
 	
 	if Input.is_action_just_pressed("Player-Range"):
 		if ranged_cooldown != 0: return
+		
 		ranged_attack()
 		ranged_cooldown = ranged_cooldown_threshold
+	
+	if Input.is_action_just_pressed("Player-Roll"):
+		roll()
+	
+	attacking = attacking_mele or attacking_ranged
 
 # Attacks
 
 func mele_attack():
+	if not DamageComponentScene.can_instantiate() or attacking_ranged: return
 	
-	if not DamageComponentScene.can_instantiate(): return
+	attacking_mele = true
 	
-	var newDamage : DamageComponent = DamageComponentScene.instantiate()
-	var newCollisionShape : CollisionShape2D = CollisionShape2D.new()
-	var newCircleShape : CircleShape2D = CircleShape2D.new()
+	var newDamage: DamageComponent = DamageComponentScene.instantiate()
+	var newCollisionShape: CollisionShape2D = CollisionShape2D.new()
+	var newCircleShape: CircleShape2D = CircleShape2D.new()
 	
 	newDamage.add_child(newCollisionShape)
 	
@@ -127,47 +150,78 @@ func mele_attack():
 	
 	get_tree().current_scene.add_child(newDamage)
 	
-	newDamage.position = self.position + Vector2(prevDir * 100,0)
+	newDamage.position = self.position + Vector2(prevDir * 100, 0)
 	
 	newDamage.init(self, MeleDamage)
 	
 	await get_tree().create_timer(0.1).timeout
 	
+	attacking_mele = false
+	
 	if newDamage: newDamage.free()
 
 func ranged_attack():
+	if RangedBullet == null or RangedBullet == "" or attacking_mele: return
 	
-	if RangedBullet == null or RangedBullet == "": return
+	attacking_ranged = true
 	
-	var newBulletScene : PackedScene = load("res://Scenes/Player/Bullets/" + RangedBullet + ".tscn")
-	var newBullet : Bullet = newBulletScene.instantiate()
+	var newBulletScene: PackedScene = load("res://Scenes/Player/Bullets/" + RangedBullet + ".tscn")
+	var newBullet: Bullet = newBulletScene.instantiate()
 	
 	get_tree().current_scene.add_child(newBullet)
 	
 	newBullet.create(self, self.position + Vector2(prevDir * 50.0, 0), prevDir)
+	
+	await get_tree().create_timer(ranged_cooldown_threshold).timeout
+	
+	attacking_ranged = false
 
 # Movement
 
+func roll():
+	
+	if rolling_timer != 0: return
+	if not running: return
+	if climbing: return
+	
+	rolling = true
+	velocity += Vector2(dir * roll_force, jump_force / 2)
+	
+	rolling_timer = rolling_timer_threshold
+	
+	await get_tree().create_timer(rolling_timer_threshold).timeout
+	
+	rolling = false
+
 func handle_movement(delta: float):
+	
 	if not is_on_floor():
 		velocity.y += gravity * delta
+		in_air = true
 	else:
-		if jumping: Landed.emit()
+		if jumping: jumping = false; Landed.emit()
+		
+		in_air = false
+		
 		current_air_jumps = air_jumps
 		coyote_timer = coyote_timer_threshold
 	
-	if is_on_wall():
+	if is_on_wall() and in_air:
 		wall_jumps = 1
 		WallJumpReady.emit()
+		
+		climbing = true
+	else: climbing = false
 	
 	if coyote_timer > 0:
 		coyote_timer -= delta
+	
 	if jump_buffer_timer > 0:
 		jump_buffer_timer -= delta
-
+	
 	if Input.is_action_just_pressed("Player-Jump"):
 		jump_buffer_timer = jump_buffer_timer_threshold
-
+	
 	if jump_buffer_timer > 0:
 		if is_on_floor() or coyote_timer > 0:
 			velocity.y = jump_force
@@ -176,6 +230,8 @@ func handle_movement(delta: float):
 			
 			Jump.emit()
 			
+			jumping = true
+			
 		elif current_air_jumps > 0:
 			velocity.y = jump_force * air_jump_boost
 			current_air_jumps -= 1
@@ -183,40 +239,79 @@ func handle_movement(delta: float):
 			
 			AirJump.emit()
 			
+			jumping = true
+			
 		elif wall_jumps > 0:
 			velocity.y = jump_force * air_jump_boost
 			wall_jumps -= 1
 			jump_buffer_timer = 0
 			
 			WallJump.emit()
+			
+			jumping = true
 		
 	dir = Input.get_axis("Player-MoveLeft", "Player-MoveRight")
 		
 	if dir:
-		
 		prevDir = dir
+		
 		velocity.x = lerp(velocity.x, dir * speed, accel)
+		running = true
 		
 		if dir == -1: $AnimatedSprite2D.flip_h = true
 		else: $AnimatedSprite2D.flip_h = false
+		
 	else:
 		velocity.x = lerp(velocity.x, dir * speed, accel)
+		running = false
+		
+	if not jumping and not in_air and not running: idle = true
+	elif jumping or in_air or running: idle = false
 
 #
 
-# Animations
+# Animations & State
+
+func handle_state():
+	
+	if rolling:
+		State = "roll"
+		return
+	
+	if attacking:
+		
+		if attacking_mele:
+			State = "attack_mele"
+		
+		if attacking_ranged:
+			State = "attack_ranged"
+		
+		return
+	
+	if climbing:
+		State = "climb"
+		return
+	
+	if idle:
+		State = "idle"
+		return
+	
+	if jumping:
+		State = "jump"
+		return
+	
+	if in_air and not jumping:
+		State = "fall"
+		return
+	
+	if running:
+		State = "run"
+	
 
 func handle_animations():
-	
-	if current_animation == "jump": $AnimatedSprite2D.animation = current_animation; $AnimatedSprite2D.play(); return
-	
-	if dir == 0 and is_on_floor():
-		current_animation = "idle"
-	
-	if dir != 0 and is_on_floor():
-		current_animation = "run"
-	
-	$AnimatedSprite2D.animation = current_animation
+	#if State == "": return
+	return
+	$AnimatedSprite2D.animation = State
 	$AnimatedSprite2D.play()
 
 ## Connectors
@@ -226,16 +321,19 @@ func handle_animations():
 func _physics_process(delta: float) -> void:
 	handle_movement(delta)
 	handle_inputs(delta)
+	handle_state()
 	handle_animations()
 	
+	print(State)
+	
 	move_and_slide()
-
+	
 #
 
 # Signals
 
 func signal_Jump():
-	jumping = true
+	pass
 
 func signal_WallJump():
 	pass
@@ -247,7 +345,7 @@ func signal_JumpReady():
 	pass
 
 func signal_Landed():
-	jumping = false
+	pass
 
 func signal_WallJumpReady():
 	pass
