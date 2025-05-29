@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dienl2rmxndte"
-path="res://.godot/imported/Bullet Spritesheet.png-f1855ec69a2cbfea452b4588ddd83e24.ctex"
+uid="uid://fc7l76suopxn"
+path="res://.godot/imported/foreground1.png-39f8eb004d9169b34640ae104ec6d70f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Bullets/Bullet Spritesheet.png"
-dest_files=["res://.godot/imported/Bullet Spritesheet.png-f1855ec69a2cbfea452b4588ddd83e24.ctex"]
+source_file="res://Assets/cuphead boss room/foreground1.png"
+dest_files=["res://.godot/imported/foreground1.png-39f8eb004d9169b34640ae104ec6d70f.ctex"]
 
 [params]
 

@@ -1,0 +1,106 @@
+[gd_scene load_steps=12 format=3 uid="uid://da3md0r0in02c"]
+
+[ext_resource type="Shader" uid="uid://cn73jod7uwjcp" path="res://Shaders/CRT.gdshader" id="1_hjcwr"]
+[ext_resource type="Texture2D" uid="uid://gvyhrgnguclu" path="res://Assets/cuphead boss room/sky.png" id="1_r52mk"]
+[ext_resource type="Texture2D" uid="uid://dqptrajdtsiyi" path="res://Assets/cuphead boss room/bg1.png" id="2_hjcwr"]
+[ext_resource type="Texture2D" uid="uid://b4idpdl6ipce5" path="res://Assets/cuphead boss room/ground.png" id="3_6bpju"]
+[ext_resource type="Texture2D" uid="uid://fc7l76suopxn" path="res://Assets/cuphead boss room/foreground1.png" id="4_vjhip"]
+[ext_resource type="PackedScene" uid="uid://dt02lih072pg2" path="res://Scenes/Enemies/Dummy.tscn" id="5_6bpju"]
+[ext_resource type="Texture2D" uid="uid://bn4h4ir1j3eer" path="res://Assets/cuphead boss room/forgreound2.png" id="5_c05ce"]
+[ext_resource type="PackedScene" uid="uid://b7f82nkhwhmd" path="res://Scenes/Player/Player.tscn" id="6_m6nhm"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_6bpju"]
+shader = ExtResource("1_hjcwr")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.0
+shader_parameter/scanlines_width = 0.0
+shader_parameter/grille_opacity = 0.0
+shader_parameter/resolution = Vector2(1280, 720)
+shader_parameter/pixelate = false
+shader_parameter/roll = false
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 0.0
+shader_parameter/roll_variation = 1.8
+shader_parameter/distort_intensity = 0.0
+shader_parameter/noise_opacity = 0.303
+shader_parameter/noise_speed = 1.0
+shader_parameter/static_noise_intensity = 0.075
+shader_parameter/aberration = 0.00300005
+shader_parameter/brightness = 1.1
+shader_parameter/discolor = false
+shader_parameter/warp_amount = 0.0
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.5
+shader_parameter/vignette_opacity = 0.2
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r8rsl"]
+size = Vector2(2081, 177)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c2dm7"]
+size = Vector2(256, 974.5)
+
+[node name="TestBossroom" type="Node2D"]
+
+[node name="CRT" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CRT"]
+material = SubResource("ShaderMaterial_6bpju")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="sky" type="Sprite2D" parent="."]
+position = Vector2(577, 179)
+scale = Vector2(2.44, 2.44)
+texture = ExtResource("1_r52mk")
+
+[node name="bg1" type="Sprite2D" parent="."]
+position = Vector2(577, 167)
+scale = Vector2(1.72, 1.72)
+texture = ExtResource("2_hjcwr")
+
+[node name="ground" type="Sprite2D" parent="."]
+position = Vector2(518, 356)
+scale = Vector2(1.52311, 1.52311)
+texture = ExtResource("3_6bpju")
+
+[node name="Dummy" parent="." instance=ExtResource("5_6bpju")]
+position = Vector2(-236, 611)
+
+[node name="Dummy2" parent="." instance=ExtResource("5_6bpju")]
+position = Vector2(820, 606)
+
+[node name="Player" parent="." instance=ExtResource("6_m6nhm")]
+position = Vector2(465, 460)
+scale = Vector2(1.2, 1.2)
+
+[node name="forground1" type="Sprite2D" parent="."]
+position = Vector2(1509, 675)
+scale = Vector2(2.31128, 2.31128)
+texture = ExtResource("4_vjhip")
+
+[node name="forground2" type="Sprite2D" parent="."]
+position = Vector2(475, 816)
+scale = Vector2(1.64, 1.64)
+texture = ExtResource("5_c05ce")
+
+[node name="CollisionShape2D" type="StaticBody2D" parent="."]
+position = Vector2(-17, 28)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollisionShape2D"]
+position = Vector2(312.5, 733)
+shape = SubResource("RectangleShape2D_r8rsl")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="CollisionShape2D"]
+position = Vector2(-663, 155)
+shape = SubResource("RectangleShape2D_c2dm7")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="CollisionShape2D"]
+position = Vector2(1111, 150.25)
+shape = SubResource("RectangleShape2D_c2dm7")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(537, 333)
+zoom = Vector2(0.55, 0.55)

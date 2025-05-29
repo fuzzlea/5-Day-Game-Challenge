@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dienl2rmxndte"
-path="res://.godot/imported/Bullet Spritesheet.png-f1855ec69a2cbfea452b4588ddd83e24.ctex"
+uid="uid://gvyhrgnguclu"
+path="res://.godot/imported/sky.png-cc274174a5e3833a2bd7fa0467ecc3fd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Bullets/Bullet Spritesheet.png"
-dest_files=["res://.godot/imported/Bullet Spritesheet.png-f1855ec69a2cbfea452b4588ddd83e24.ctex"]
+source_file="res://Assets/cuphead boss room/sky.png"
+dest_files=["res://.godot/imported/sky.png-cc274174a5e3833a2bd7fa0467ecc3fd.ctex"]
 
 [params]
 
