@@ -19,7 +19,7 @@ func hit(what : BodyComponent):
 	#print(self.name + " Hit " + what.get_parent().name + "!\nHealth: " + str(what.Health))
 	
 	if Type == Bullet:
-		get_parent().queue_free()
+		get_parent().emit_signal("Explode", what)
 	else:
 		queue_free()
 	
