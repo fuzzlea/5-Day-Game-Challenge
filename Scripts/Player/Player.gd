@@ -170,7 +170,7 @@ func ranged_attack():
 	
 	get_tree().current_scene.add_child(newBullet)
 	
-	newBullet.create(self, self.position + Vector2(prevDir * 50.0, 0), prevDir)
+	newBullet.create(self, self.position + Vector2(prevDir * 150.0, 0), prevDir)
 	
 	await get_tree().create_timer(ranged_cooldown_threshold).timeout
 	

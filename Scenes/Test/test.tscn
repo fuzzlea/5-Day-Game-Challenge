@@ -1,9 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://bqtnsa4wygpbc"]
+[gd_scene load_steps=8 format=3 uid="uid://bqtnsa4wygpbc"]
 
 [ext_resource type="PackedScene" uid="uid://b7f82nkhwhmd" path="res://Scenes/Player/Player.tscn" id="1_oy6ep"]
 [ext_resource type="Shader" uid="uid://cn73jod7uwjcp" path="res://Shaders/CRT.gdshader" id="1_vfjqq"]
 [ext_resource type="Texture2D" uid="uid://bts5m8t70a5ms" path="res://icon.svg" id="2_kr3tn"]
-[ext_resource type="PackedScene" uid="uid://dn1jos73cwcum" path="res://Scenes/Components/DamageComponent.tscn" id="3_v7cj3"]
 [ext_resource type="PackedScene" uid="uid://dt02lih072pg2" path="res://Scenes/Enemies/Dummy.tscn" id="4_83r8m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vfjqq"]
@@ -31,10 +30,10 @@ shader_parameter/vignette_intensity = 0.5
 shader_parameter/vignette_opacity = 0.2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_v7cj3"]
-size = Vector2(127.723, 120)
+size = Vector2(124, 124)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_83r8m"]
-radius = 109.0
+radius = 75.0067
 
 [node name="Node2D" type="Node2D"]
 
@@ -53,65 +52,128 @@ position = Vector2(608, 243)
 
 [node name="SillyTestMap" type="Node" parent="."]
 
-[node name="Sprite2D" type="StaticBody2D" parent="SillyTestMap"]
-position = Vector2(603.5, 594)
-scale = Vector2(21.6328, 1)
+[node name="StaticBody2D" type="StaticBody2D" parent="SillyTestMap"]
 
-[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D"]
+[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(627.015, 374.615)
+scale = Vector2(10.4221, 0.884615)
 texture = ExtResource("2_kr3tn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(627.015, 374.615)
+scale = Vector2(10.4221, 0.884615)
 shape = SubResource("RectangleShape2D_v7cj3")
 
-[node name="Sprite2D2" type="StaticBody2D" parent="SillyTestMap"]
-position = Vector2(1985, -69)
-scale = Vector2(1.413, 10.52)
-
-[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D2"]
+[node name="Sprite2D2" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(1899.02, 371.615)
+scale = Vector2(10.4221, 0.884615)
 texture = ExtResource("2_kr3tn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D2"]
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(1899.02, 371.615)
+scale = Vector2(10.4221, 0.884615)
 shape = SubResource("RectangleShape2D_v7cj3")
 
-[node name="Sprite2D3" type="StaticBody2D" parent="SillyTestMap"]
-position = Vector2(-545, 226)
-scale = Vector2(12.588, 1.315)
-
-[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D3"]
+[node name="Sprite2D4" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(2948.94, 140.322)
+rotation = -0.261799
+scale = Vector2(10.4221, 0.884615)
 texture = ExtResource("2_kr3tn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D3"]
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(2948.94, 140.322)
+rotation = -0.261799
+scale = Vector2(10.4221, 0.884615)
 shape = SubResource("RectangleShape2D_v7cj3")
 
-[node name="Sprite2D4" type="StaticBody2D" parent="SillyTestMap"]
-position = Vector2(976, -108)
-scale = Vector2(12.588, 1.315)
-
-[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/Sprite2D4"]
+[node name="Sprite2D5" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(4136.96, -357.462)
+rotation = -0.523598
+scale = Vector2(10.4221, 0.884615)
 texture = ExtResource("2_kr3tn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/Sprite2D4"]
+[node name="CollisionShape2D5" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(4136.96, -357.462)
+rotation = -0.523598
+scale = Vector2(10.4221, 0.884615)
 shape = SubResource("RectangleShape2D_v7cj3")
 
-[node name="DamageComponent" parent="SillyTestMap" instance=ExtResource("3_v7cj3")]
-Damage = 20.0
+[node name="Sprite2D6" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(5143.68, -1139.32)
+rotation = -0.785397
+scale = Vector2(10.4221, 0.884615)
+texture = ExtResource("2_kr3tn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/DamageComponent"]
-position = Vector2(-318, 28)
-shape = SubResource("CircleShape2D_83r8m")
-debug_color = Color(0.978666, 0, 0.394343, 0.42)
+[node name="CollisionShape2D6" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(5143.68, -1139.32)
+rotation = -0.785397
+scale = Vector2(10.4221, 0.884615)
+shape = SubResource("RectangleShape2D_v7cj3")
 
-[node name="DamageComponent2" parent="SillyTestMap" instance=ExtResource("3_v7cj3")]
-position = Vector2(1917, -361)
-Damage = 5.0
+[node name="Sprite2D7" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(5924.54, -2156.04)
+rotation = -1.0472
+scale = Vector2(10.4221, 0.884615)
+texture = ExtResource("2_kr3tn")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/DamageComponent2"]
-position = Vector2(-318, 28)
-shape = SubResource("CircleShape2D_83r8m")
-debug_color = Color(0.978666, 0, 0.394343, 0.42)
+[node name="CollisionShape2D7" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(5924.54, -2156.04)
+rotation = -1.0472
+scale = Vector2(10.4221, 0.884615)
+shape = SubResource("RectangleShape2D_v7cj3")
+
+[node name="Sprite2D8" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(6410.32, -3332.06)
+rotation = -1.309
+scale = Vector2(10.4221, 0.884615)
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D8" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(6410.32, -3332.06)
+rotation = -1.309
+scale = Vector2(10.4221, 0.884615)
+shape = SubResource("RectangleShape2D_v7cj3")
+
+[node name="Sprite2D9" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(6576.62, -4597.98)
+rotation = -1.57079
+scale = Vector2(10.4221, 0.884615)
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D9" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(6576.62, -4597.98)
+rotation = -1.57079
+scale = Vector2(10.4221, 0.884615)
+shape = SubResource("RectangleShape2D_v7cj3")
+
+[node name="Sprite2D3" type="Sprite2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(-667.985, 374.615)
+scale = Vector2(10.4221, 0.884615)
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D"]
+position = Vector2(-667.985, 374.615)
+scale = Vector2(10.4221, 0.884615)
+shape = SubResource("RectangleShape2D_v7cj3")
 
 [node name="Dummy" parent="SillyTestMap" instance=ExtResource("4_83r8m")]
-position = Vector2(512, -277)
+position = Vector2(-517, 250)
 
 [node name="Dummy2" parent="SillyTestMap" instance=ExtResource("4_83r8m")]
-position = Vector2(-67, 76)
+position = Vector2(-95, 245)
+
+[node name="Dummy3" parent="SillyTestMap" instance=ExtResource("4_83r8m")]
+position = Vector2(1103, 250)
+
+[node name="Dummy4" parent="SillyTestMap" instance=ExtResource("4_83r8m")]
+position = Vector2(1653, 242)
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="SillyTestMap"]
+
+[node name="Sprite2D" type="Sprite2D" parent="SillyTestMap/StaticBody2D2"]
+position = Vector2(-847, 242)
+texture = ExtResource("2_kr3tn")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SillyTestMap/StaticBody2D2"]
+position = Vector2(-847, 242)
+shape = SubResource("CircleShape2D_83r8m")
