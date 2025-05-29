@@ -74,7 +74,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_spxdj")
 }],
 "loop": true,
-"name": &"attack_mele",
+"name": &"attack_ranged",
 "speed": 5.0
 }, {
 "frames": [{
@@ -144,8 +144,7 @@ c_BodyComponent = NodePath("BodyComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4wape")
-animation = &"attack_mele"
-frame_progress = 0.775173
+animation = &"attack_ranged"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false

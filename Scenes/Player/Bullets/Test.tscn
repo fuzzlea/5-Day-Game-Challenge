@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://b80vqncg3hwou"]
 
-[ext_resource type="Script" uid="uid://14bxicw7aj38" path="res://Scripts/Player/Bullets/Regular.gd" id="1_a755n"]
+[ext_resource type="Script" uid="uid://14bxicw7aj38" path="res://Scripts/Player/Bullets/Test.gd" id="1_a755n"]
 [ext_resource type="Texture2D" uid="uid://wp2s1ggu7813" path="res://Assets/Bullets/CupheadLobber.png" id="2_6vyal"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_msbh5"]

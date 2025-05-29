@@ -36,7 +36,7 @@ signal Attack_Ranged
 @export var MeleDamage: float = 10.0
 @export var MeleDamageRadius: float = 100.0
 @export var RangedDamage: float = 5.0
-@export var RangedBullet: String = "Test"
+@export var RangedBullet: String = "Meow"
 
 @export_subgroup("Components")
 @export var c_BodyComponent: BodyComponent
@@ -315,7 +315,8 @@ func handle_animations():
 		"jump",
 		"idle",
 		"run",
-		"roll"
+		"roll",
+		"attack_ranged"
 		
 	] #temp
 	
