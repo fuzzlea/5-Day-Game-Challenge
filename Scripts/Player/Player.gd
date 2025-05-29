@@ -36,7 +36,7 @@ signal Attack_Ranged
 @export var MeleDamage: float = 10.0
 @export var MeleDamageRadius: float = 100.0
 @export var RangedDamage: float = 5.0
-@export var RangedBullet: String = "Regular"
+@export var RangedBullet: String = "Test"
 
 @export_subgroup("Components")
 @export var c_BodyComponent: BodyComponent
@@ -152,7 +152,7 @@ func mele_attack():
 	
 	newDamage.position = self.position + Vector2(prevDir * 100, 0)
 	
-	newDamage.init(self, MeleDamage)
+	newDamage.init(self, Player, MeleDamage)
 	
 	await get_tree().create_timer(0.1).timeout
 	
@@ -189,7 +189,7 @@ func roll():
 	
 	rolling_timer = rolling_timer_threshold
 	
-	await get_tree().create_timer(rolling_timer_threshold).timeout
+	await get_tree().create_timer(0.25).timeout
 	
 	rolling = false
 

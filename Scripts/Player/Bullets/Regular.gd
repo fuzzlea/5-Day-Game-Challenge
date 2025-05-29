@@ -2,7 +2,7 @@ class_name Bullet
 extends StaticBody2D
 
 var Sender
-@export var Speed : float = 25.0
+@export var Speed : float = 15.0
 @export var Damage : float = 10.0
 @export var Dir : float = 1.0
 @export var Decay : float = 2.0
@@ -24,11 +24,13 @@ func create(from, where : Vector2, dir : float):
 	newDamage.add_child(newCollisionShape)
 	add_child(newDamage)
 	
-	newDamage.init(from, Damage)
+	newDamage.init(from, Bullet, Damage)
+	
+	$AnimatedSprite2D.play()
 
 func _physics_process(delta: float) -> void:
 	
 	if Decay <= 0: queue_free()
 	
-	position += Vector2(Speed * Dir, 0)
+	position += Vector2(Speed * Dir, sin(randf_range(-10,10)) )
 	Decay -= delta
