@@ -25,6 +25,7 @@ signal Attack_Ranged
 # Onready
 
 @onready var DamageComponentScene: PackedScene = preload("res://Scenes/Components/DamageComponent.tscn")
+@onready var BulletScene: PackedScene = preload("res://Scenes/Player/Bullet.tscn")
 
 # Exports
 
@@ -33,9 +34,6 @@ signal Attack_Ranged
 
 @export_subgroup("Init Stats")
 @export var Health: float = 100.0
-@export var MeleDamage: float = 10.0
-@export var MeleDamageRadius: float = 100.0
-@export var RangedDamage: float = 5.0
 @export var RangedBullet: String = "Meow"
 
 @export_subgroup("Components")
@@ -48,10 +46,6 @@ var mele_cooldown_threshold = 0.35
 
 var ranged_cooldown = 0
 var ranged_cooldown_threshold = 0.15
-
-# Animation
-
-var current_animation = "idle"
 
 # Movement
 
@@ -144,7 +138,7 @@ func mele_attack():
 	
 	newDamage.add_child(newCollisionShape)
 	
-	newCircleShape.radius = MeleDamageRadius
+	newCircleShape.radius = DATA.BulletInformation[RangedBullet]["Special"]["Radius"]
 	newCollisionShape.shape = newCircleShape
 	newCollisionShape.debug_color = Color.RED
 	
@@ -152,7 +146,7 @@ func mele_attack():
 	
 	newDamage.position = self.position + Vector2(prevDir * 100, 0)
 	
-	newDamage.init(self, Player, MeleDamage)
+	newDamage.init(self, Player, DATA.BulletInformation[RangedBullet]["Special"]["Damage"])
 	
 	await get_tree().create_timer(0.1).timeout
 	
@@ -165,12 +159,11 @@ func ranged_attack():
 	
 	attacking_ranged = true
 	
-	var newBulletScene: PackedScene = load("res://Scenes/Player/Bullets/" + RangedBullet + ".tscn")
-	var newBullet: Bullet = newBulletScene.instantiate()
+	var newBullet: Bullet = BulletScene.instantiate()
 	
 	get_tree().current_scene.add_child(newBullet)
 	
-	newBullet.create(self, self.position + Vector2(prevDir * 150.0, 0), prevDir)
+	newBullet.create(RangedBullet, self, self.position, prevDir)
 	
 	await get_tree().create_timer(ranged_cooldown_threshold).timeout
 	
