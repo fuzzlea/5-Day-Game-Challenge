@@ -1,6 +1,6 @@
 [gd_scene load_steps=16 format=3 uid="uid://ditdwkog7fedr"]
 
-[ext_resource type="Script" uid="uid://b1xh36ga33rmh" path="res://Scripts/Player/Bullets/Meow.gd" id="1_7b6ax"]
+[ext_resource type="Script" uid="uid://b1xh36ga33rmh" path="res://Scripts/Player/Bullet.gd" id="1_7b6ax"]
 [ext_resource type="Texture2D" uid="uid://dienl2rmxndte" path="res://Assets/Bullets/Bullet Spritesheet.png" id="2_7b6ax"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_msbh5"]
@@ -32,7 +32,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_yfxll")
 }],
 "loop": true,
-"name": &"left",
+"name": &"meow_left",
 "speed": 10.0
 }, {
 "frames": [{
@@ -43,7 +43,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_opd8r")
 }],
 "loop": true,
-"name": &"right",
+"name": &"meow_right",
 "speed": 10.0
 }]
 
@@ -73,11 +73,6 @@ region = Rect2(3150, 350, 350, 350)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_kd0sm"]
 animations = [{
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7b6ax")
@@ -98,7 +93,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_5ay5l")
 }],
 "loop": false,
-"name": &"poof",
+"name": &"meow",
 "speed": 12.0
 }]
 
@@ -116,13 +111,10 @@ debug_color = Color(0.782999, 0.364722, 0.618411, 0.42)
 position = Vector2(0, -8)
 scale = Vector2(0.157068, 0.157068)
 sprite_frames = SubResource("SpriteFrames_6rn5w")
-animation = &"left"
-frame_progress = 0.0966376
+animation = &"meow_right"
 
 [node name="Particle" type="AnimatedSprite2D" parent="."]
 position = Vector2(-6, -42)
 scale = Vector2(0.457143, 0.457143)
 sprite_frames = SubResource("SpriteFrames_kd0sm")
-animation = &"poof"
-frame = 5
-frame_progress = 1.0
+animation = &"meow"
