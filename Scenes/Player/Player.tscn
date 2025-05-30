@@ -92,7 +92,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_w71ue")
 }],
-"loop": true,
+"loop": false,
 "name": &"climb",
 "speed": 5.0
 }, {
@@ -164,7 +164,6 @@ c_BodyComponent = NodePath("BodyComponent")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4wape")
 animation = &"climb"
-frame = 1
 frame_progress = 0.0653118
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
