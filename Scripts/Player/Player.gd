@@ -309,7 +309,8 @@ func handle_animations():
 		"idle",
 		"run",
 		"roll",
-		"attack_ranged"
+		"attack_ranged",
+		"climb"
 		
 	] #temp
 	
