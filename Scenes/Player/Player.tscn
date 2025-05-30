@@ -5,15 +5,15 @@
 [ext_resource type="Texture2D" uid="uid://kekgjs1q28ua" path="res://Assets/Kitty Character/kitty sprite.png" id="2_ude3g"]
 [ext_resource type="PackedScene" uid="uid://bf3i6rha1s7dd" path="res://Scenes/Components/BodyComponent.tscn" id="3_h54ih"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_jmcll"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_ude3g"]
 atlas = ExtResource("2_ude3g")
 region = Rect2(900, 0, 150, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_4wape"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmcll"]
 atlas = ExtResource("2_ude3g")
 region = Rect2(1050, 0, 150, 150)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_t26db"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wape"]
 atlas = ExtResource("2_ude3g")
 region = Rect2(1200, 0, 150, 150)
 
@@ -65,13 +65,13 @@ region = Rect2(300, 0, 150, 150)
 animations = [{
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_ude3g")
+}, {
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_jmcll")
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4wape")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_t26db")
 }],
 "loop": true,
 "name": &"attack_ranged",
@@ -144,7 +144,7 @@ c_BodyComponent = NodePath("BodyComponent")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_4wape")
-animation = &"jump"
+animation = &"attack_ranged"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 visible = false
@@ -157,8 +157,7 @@ shape = SubResource("CapsuleShape2D_qbkls")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(0, -108.995)
-enabled = false
-zoom = Vector2(0.9, 0.9)
+zoom = Vector2(0.85, 0.85)
 position_smoothing_enabled = true
 
 [node name="BodyComponent" parent="." instance=ExtResource("3_h54ih")]

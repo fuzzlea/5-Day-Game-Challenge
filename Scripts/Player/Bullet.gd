@@ -14,6 +14,12 @@ var Decay = 0
 var speed_increase : float = 0.0
 var speed_kill : int = 1
 
+var hash_bullet_init_pos : Dictionary = {
+	
+	"Meow": Vector2(125,0)
+	
+}
+
 func move_bullet():
 	match BulletType:
 		"Meow":
@@ -44,7 +50,7 @@ func create(bullet : String, from, where : Vector2, dir : float):
 	
 	$Particle.visible = false
 	
-	position = where
+	position = where + (hash_bullet_init_pos[bullet] * dir)
 	
 	Sender = from
 	Dir = dir
