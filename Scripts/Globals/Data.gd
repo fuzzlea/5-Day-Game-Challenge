@@ -22,8 +22,9 @@ var EnemyInformation : Dictionary = {
 	
 	# Grassland Enemies
 	"Frank" : {
-		"Health": 10.0,
+		"Health": 30.0,
 		"Speed": 5.0,
+		"UseGravity": true
 	}
 	
 }

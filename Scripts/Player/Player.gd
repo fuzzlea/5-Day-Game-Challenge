@@ -330,7 +330,7 @@ func _physics_process(delta: float) -> void:
 	handle_state()
 	handle_animations()
 	
-	print(State)
+	#print(State)
 	
 	move_and_slide()
 	

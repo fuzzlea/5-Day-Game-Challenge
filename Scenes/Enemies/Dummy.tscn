@@ -1,31 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://dt02lih072pg2"]
+[gd_scene load_steps=3 format=3 uid="uid://dt02lih072pg2"]
 
 [ext_resource type="Script" uid="uid://dlv6gimlruxc3" path="res://Scripts/Enemies/Dummy.gd" id="1_057ka"]
 [ext_resource type="Texture2D" uid="uid://bts5m8t70a5ms" path="res://icon.svg" id="2_7role"]
-[ext_resource type="PackedScene" uid="uid://bf3i6rha1s7dd" path="res://Scenes/Components/BodyComponent.tscn" id="3_8pqyo"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_x643r"]
-size = Vector2(128, 126)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_vt1k1"]
-size = Vector2(126, 122)
-
-[node name="Dummy" type="CharacterBody2D" node_paths=PackedStringArray("c_BodyComponent")]
+[node name="Dummy" type="CharacterBody2D"]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_057ka")
-c_BodyComponent = NodePath("BodyComponent")
+_E = "Frank"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.717895, 0.626786, 0, 1)
 texture = ExtResource("2_7role")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_x643r")
-debug_color = Color(0, 0.6, 0.701961, 0)
-
-[node name="BodyComponent" parent="." instance=ExtResource("3_8pqyo")]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BodyComponent"]
-shape = SubResource("RectangleShape2D_vt1k1")
-debug_color = Color(0.482997, 0.268031, 0.0491858, 0.42)

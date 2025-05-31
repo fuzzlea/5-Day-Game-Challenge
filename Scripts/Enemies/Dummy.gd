@@ -1,18 +1,22 @@
-extends CharacterBody2D
+extends CharacterBody2D 
 
-signal Hurt
+@export var _E : String
 
-@export_category("Stats")
-@export var Health : float = -1.0
+@onready var EnemyScene : PackedScene = preload("res://Scenes/Enemies/Enemy.tscn")
 
-@export_category("Components")
-@export var c_BodyComponent : BodyComponent
-
-func hit():
-	self.modulate = Color(5,5,5)
-	self.create_tween().tween_property(self, "modulate", Color(1,1,1), 0.1)
+var E : Enemy
 
 func _ready():
-	c_BodyComponent.init(self, Health)
 	
-	Hurt.connect(hit)
+	if not EnemyScene.can_instantiate() or not _E: return
+	
+	$Sprite2D.visible = false
+	
+	E = EnemyScene.instantiate()
+	
+	get_tree().current_scene.add_child.call_deferred(E)
+	E.position = position
+	
+	E.init(_E)
+	
+	queue_free()

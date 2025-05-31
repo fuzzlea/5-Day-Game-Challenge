@@ -6,7 +6,7 @@ var Type
 @export var Damage : float
 
 @warning_ignore("shadowed_variable_base_class")
-func init(owner, type, damage: float = 10.0):
+func init(owner, type, damage: float = 1.0):
 	Type = type
 	Owner = owner
 	Damage = damage
@@ -27,3 +27,4 @@ func hit(what : BodyComponent):
 		what.User.emit_signal("Hurt")
 	if what.User is Enemy:
 		what.User.emit_signal("Hurt")
+ 

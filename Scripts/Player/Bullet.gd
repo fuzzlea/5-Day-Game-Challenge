@@ -31,18 +31,20 @@ func move_bullet():
 func explode(body):
 	
 	speed_kill = 0
-	if body: position = body.global_position
-	
-	$Particle.visible = true
+	if body and body.get_parent() is Enemy: position = body.get_child(0).global_position
 	
 	$AnimatedSprite2D.visible = false
-	$Particle.play(BulletType.to_lower())
-	
 	z_index = 100
 	
-	$Particle.animation_finished.connect(func():
+	if body and body.Dead:
+		$Particle.visible = true
+		$Particle.play(BulletType.to_lower())
+		
+		$Particle.animation_finished.connect(func():
+			queue_free()
+		)
+	else:
 		queue_free()
-	)
 
 func create(bullet : String, from, where : Vector2, dir : float):
 	

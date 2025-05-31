@@ -1,8 +1,9 @@
-[gd_scene load_steps=9 format=3 uid="uid://cdkpm1c7dvtyk"]
+[gd_scene load_steps=12 format=3 uid="uid://cdkpm1c7dvtyk"]
 
 [ext_resource type="Script" uid="uid://c81q2oj363pkx" path="res://Scripts/Enemies/Enemy.gd" id="1_7kucs"]
 [ext_resource type="Texture2D" uid="uid://g44sleg5feck" path="res://Assets/Enemies/sausage enemy.png" id="1_ucmt6"]
 [ext_resource type="PackedScene" uid="uid://bf3i6rha1s7dd" path="res://Scenes/Components/BodyComponent.tscn" id="2_8o0hk"]
+[ext_resource type="PackedScene" uid="uid://dn1jos73cwcum" path="res://Scenes/Components/DamageComponent.tscn" id="4_qwcx1"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8o0hk"]
 atlas = ExtResource("1_ucmt6")
@@ -42,18 +43,45 @@ animations = [{
 radius = 84.0
 height = 348.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_7kucs"]
+radius = 70.0643
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_35yb6"]
+radius = 83.0
+height = 344.0
+
 [node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 2
 script = ExtResource("1_7kucs")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -320)
 sprite_frames = SubResource("SpriteFrames_35yb6")
 animation = &"frank_idle"
-frame_progress = 0.650004
+frame_progress = 0.00405814
 
 [node name="BodyComponent" parent="." instance=ExtResource("2_8o0hk")]
 
-[node name="BodyCollisionShapes" type="Node" parent="."]
+[node name="EnemyExtras" type="Node" parent="."]
 
-[node name="Frank" type="CollisionShape2D" parent="BodyCollisionShapes"]
-position = Vector2(4, 152)
+[node name="Frank" type="Node" parent="EnemyExtras"]
+
+[node name="BodyCollisionShape" type="CollisionShape2D" parent="EnemyExtras/Frank"]
+position = Vector2(4, -168)
 shape = SubResource("CapsuleShape2D_7kucs")
+disabled = true
+debug_color = Color(0.75897, 0.450635, 0.127345, 0.42)
+
+[node name="CollisionShape" type="CollisionShape2D" parent="EnemyExtras/Frank"]
+position = Vector2(0, -64)
+shape = SubResource("CircleShape2D_7kucs")
+disabled = true
+
+[node name="DamageComponent" parent="EnemyExtras/Frank" instance=ExtResource("4_qwcx1")]
+position = Vector2(4, -168)
+Damage = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="EnemyExtras/Frank/DamageComponent"]
+shape = SubResource("CapsuleShape2D_35yb6")
+debug_color = Color(0.970935, 0, 0.45137, 0.42)
