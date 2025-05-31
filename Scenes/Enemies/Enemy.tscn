@@ -1,0 +1,59 @@
+[gd_scene load_steps=9 format=3 uid="uid://cdkpm1c7dvtyk"]
+
+[ext_resource type="Script" uid="uid://c81q2oj363pkx" path="res://Scripts/Enemies/Enemy.gd" id="1_7kucs"]
+[ext_resource type="Texture2D" uid="uid://g44sleg5feck" path="res://Assets/Enemies/sausage enemy.png" id="1_ucmt6"]
+[ext_resource type="PackedScene" uid="uid://bf3i6rha1s7dd" path="res://Scenes/Components/BodyComponent.tscn" id="2_8o0hk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8o0hk"]
+atlas = ExtResource("1_ucmt6")
+region = Rect2(0, 0, 700, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7kucs"]
+atlas = ExtResource("1_ucmt6")
+region = Rect2(0, 0, 700, 700)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qwcx1"]
+atlas = ExtResource("1_ucmt6")
+region = Rect2(700, 0, 700, 700)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_35yb6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8o0hk")
+}],
+"loop": true,
+"name": &"frank_idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7kucs")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qwcx1")
+}],
+"loop": true,
+"name": &"frank_walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7kucs"]
+radius = 84.0
+height = 348.0
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_7kucs")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_35yb6")
+animation = &"frank_idle"
+frame_progress = 0.650004
+
+[node name="BodyComponent" parent="." instance=ExtResource("2_8o0hk")]
+
+[node name="BodyCollisionShapes" type="Node" parent="."]
+
+[node name="Frank" type="CollisionShape2D" parent="BodyCollisionShapes"]
+position = Vector2(4, 152)
+shape = SubResource("CapsuleShape2D_7kucs")

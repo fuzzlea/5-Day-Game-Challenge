@@ -15,3 +15,15 @@ var BulletInformation : Dictionary = {
 	}
 	
 }
+
+var BossInformation : Dictionary = {}
+
+var EnemyInformation : Dictionary = {
+	
+	# Grassland Enemies
+	"Frank" : {
+		"Health": 10.0,
+		"Speed": 5.0,
+	}
+	
+}
